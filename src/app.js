@@ -16,6 +16,8 @@ if (config.env !== 'test') {
 //  parse json request body
 app.use(express.json());
 
+app.use(express.static('public'));
+
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 

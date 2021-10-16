@@ -6,7 +6,15 @@ const login = {
     password: Joi.string().required(),
   }),
 };
+const imageFields = {
+  body: Joi.object().keys({
+    originalname: Joi.string().required(),
+    optimizedname: Joi.string().required(),
+    url: Joi.string().required(),
+  }),
+};
 
 module.exports = {
   login,
+  imageFields,
 };
