@@ -2,6 +2,7 @@ const fs = require('fs');
 const got = require('got');
 const httpStatus = require('http-status');
 const sharp = require('sharp');
+const getFileExt = require('../middlewares/fileExtension');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -14,7 +15,7 @@ const handleException = (originalImagePath, resizedImagePath) => {
     fs.unlinkSync(originalImagePath);
     fs.unlinkSync(resizedImagePath);
   } catch (e) {
-    throw new ApiError(httpStatus.BAD_REQUEST, e);
+    throw new ApiError(httpStatus.BAD_REQUEST, 'error');
   }
 };
 /**
@@ -26,20 +27,21 @@ const handleException = (originalImagePath, resizedImagePath) => {
  * @returns {Promise}
  */
 const downloadImageAndResize = (url, originalImagePath, resizedImagePath) => {
+  const fileExt = getFileExt(url);
   const sharpStream = sharp({
     failOnError: false,
   });
 
   const promises = [];
 
-  promises.push(sharpStream.clone().toFormat('jpg').toFile(originalImagePath));
+  promises.push(sharpStream.clone().toFormat(fileExt).toFile(`${originalImagePath}.${fileExt}`));
 
   promises.push(
     sharpStream
       .clone()
       .resize({ width: 50, height: 50 })
-      .toFormat('jpg')
-      .toFile(resizedImagePath),
+      .toFormat(fileExt)
+      .toFile(`${resizedImagePath}.${fileExt}`),
   );
 
   // https://github.com/sindresorhus/got#gotstreamurl-options

@@ -14,7 +14,8 @@ const auth = async (req, res, next) => {
 
   // Verify token
   try {
-    await tokenService.verifyToken(jwttoken);
+    const decode = await tokenService.verifyToken(jwttoken);
+    req.user = decode;
     next();
   } catch (err) {
     return next(new ApiError(httpStatus.UNAUTHORIZED, err));
