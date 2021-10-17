@@ -15,7 +15,7 @@ const handleException = (originalImagePath, resizedImagePath) => {
     fs.unlinkSync(originalImagePath);
     fs.unlinkSync(resizedImagePath);
   } catch (e) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'error');
+    throw new ApiError(httpStatus.BAD_REQUEST, e);
   }
 };
 /**

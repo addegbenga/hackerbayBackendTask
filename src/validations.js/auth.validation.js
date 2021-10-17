@@ -14,7 +14,15 @@ const imageFields = {
   }),
 };
 
+const patchFields = {
+  body: Joi.object().keys({
+    jsonObject: Joi.object().required(),
+    jsonPatchObject: Joi.object().required(),
+  }),
+};
+
 module.exports = {
   login,
   imageFields,
+  patchFields,
 };
